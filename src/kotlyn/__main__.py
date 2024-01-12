@@ -149,7 +149,7 @@ def main() -> None:
         # Creating folders
         create_folder(f"{MODULE_DIR}")
         create_folder(f"{MODULE_DIR}/shell")
-        create_folder(f"{MODULE_DIR}/shell/kotlyn")
+        create_folder(f"{MODULE_DIR}/shell/bin")
         create_folder(f"{MODULE_DIR}/temp/install")
 
         # Creating files
