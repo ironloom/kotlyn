@@ -223,7 +223,7 @@ def main() -> None:
                     "goto loop",
                     ":endloop",
                     "rem Call the Python module with the combined arguments",
-                    "python -m zenyxheic %args%",
+                    "python -m kotlyn %args%",
                     "endlocal"
                 ]
             ),
