@@ -188,7 +188,7 @@ def main() -> None:
             path(f"{HOME_DIRECTORY}/{MODULE_DIR}/shell/setup_kotlin_env.ps1"),
             "\n".join(
                 [
-                    f"[Environment]::SetEnvironmentVariable(\"KOTLIN_HOME\", \"{path(f'{HOME_DIRECTORY}/{MODULE_DIR}/kotlinc/bin')}\", [EnvironmentVariableTarget]::User)",
+                    f"[Environment]::SetEnvironmentVariable(\"KOTLIN_HOME\", \"{path(f'{HOME_DIRECTORY}/{MODULE_DIR}/kotlinc')}\", [EnvironmentVariableTarget]::User)",
                     "# Test folder",
                     f'$InstallLocation = "%KOTLIN_HOME%\\bin"',
                     "# To add folder to PATH",
