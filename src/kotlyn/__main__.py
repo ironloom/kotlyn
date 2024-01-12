@@ -163,6 +163,8 @@ def main() -> None:
             zenyx.printf("@!Setup has been completed before!$&")
             return
 
+        zenyx.printf("@?Downloading Kotlin...$&", end="\r")
+
         # Downloading latest release
         download_github_release(
             "JetBrains", "kotlin", path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/install")
