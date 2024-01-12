@@ -142,6 +142,9 @@ def read_file(path: str) -> str:
 
 def main() -> None:
     global ARGS
+    if len(ARGS) == 1:
+        ARGS.append("--test")
+
     if ARGS[1] == "--setup":
         # Creating folders
         create_folder(f"{MODULE_DIR}")
@@ -252,6 +255,8 @@ def main() -> None:
         )
         return
 
+    if ARGS[1] == "--test":
+        print("test yippie")
 
 if __name__ == "__main__":
     main()
