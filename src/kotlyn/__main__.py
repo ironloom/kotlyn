@@ -230,7 +230,7 @@ def main() -> None:
                     "# Combine all arguments into a single string",
                     "$argsString = """,
                     "while ($args) {",
-                    "    $argsString += " " + $args[0]",
+                    "    $argsString += \" \" + $args[0]",
                     "    $args = $args[1..$args.length]",
                     "}",
                     "# Call the Python module with the combined arguments and capture the output",
