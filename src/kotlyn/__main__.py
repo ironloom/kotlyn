@@ -226,19 +226,16 @@ def main() -> None:
             path(f"{HOME_DIRECTORY}/{MODULE_DIR}/shell/bin/kotlyn.bat"),
             "\n".join(
                 [
-                    "@echo off",
-                    "setlocal enabledelayedexpansion",
-                    "rem Combine all arguments into a single string",
-                    "set \"args=\"",
-                    ":loop",
-                    "if \"%1\"==\"\" goto endloop",
-                    "set \"args=!args! %1\"",
-                    "shift",
-                    "goto loop",
-                    ":endloop",
-                    "rem Call the Python module with the combined arguments",
-                    "python -m kotlyn %args%",
-                    "endlocal"
+                    "# Combine all arguments into a single string",
+                    "$argsString = """,
+                    "while ($args) {",
+                    "    $argsString += " " + $args[0]",
+                    "    $args = $args[1..$args.length]",
+                    "}",
+                    "# Call the Python module with the combined arguments and capture the output",
+                    "$result = Invoke-Expression -Command \"python -m kotlyn $argsString\"",
+                    "# Echo back the result",
+                    "echo $result"
                 ]
             ),
         )
