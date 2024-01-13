@@ -1,13 +1,15 @@
 import os
 import sys
 import zenyx
+from zenyx import printf
 import requests
 import zipfile
 import random
 import time
+import termcolor
 
 
-ARGS = list(sys.argv)
+ARGS = zenyx.Arguments(sys.argv)
 HOME_DIRECTORY = os.path.expanduser("~")
 MODULE_DIR = "kotlyn"
 
@@ -50,10 +52,10 @@ def download_github_release(repo_owner, repo_name, download_path="."):
                 asset_name = asset["name"]
                 download_url(asset_url, os.path.join(download_path, asset_name))
 
-            print(f"Latest release ({latest_release_tag}) downloaded successfully.")
+            printf(f"  @!Kotlyn$&/download_github_release\n   @~Latest release ({latest_release_tag}) downloaded successfully.$&")
         else:
-            print(
-                f"Failed to retrieve release information. Status code: {response.status_code}"
+            printf(
+                f"  @!Kotlyn$&/download_github_release\n   @!Failed to retrieve release information. Status code: {response.status_code}$&"
             )
 
 
@@ -63,11 +65,11 @@ def create_folder(folder_name) -> None:
 
     try:
         os.makedirs(folder_path)
-        print(f"✓ '{folder_name}' created successfully at")
+        printf(f"  @!Kotlyn$&/create_folder\n   @~Folder '{folder_name}' created successfully$&")
     except FileExistsError:
-        print(f"Folder '{folder_name}' already exists at: {folder_path}")
+        printf(f"  @!Kotlyn$&/create_folder\n   @~Folder '{folder_name}' already exists$&")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        printf(f"An error occurred: {e}")
 
 
 def find_kotlin_compiler_zip(directory_path):
@@ -82,7 +84,7 @@ def find_kotlin_compiler_zip(directory_path):
         if matching_files:
             return matching_files[0]
         else:
-            print("No matching file found.")
+            printf("  @!Kotlyn$&/find_kotlin_compiler_zip\n   @~No matching file found.$&")
             return None
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -105,7 +107,7 @@ def delete_files_in_folder(folder_path):
             if os.path.isfile(file_path):
                 os.remove(file_path)
 
-        print(f"All files in {folder_path} have been deleted.")
+        print(f"  @!Kotlyn$&/delete_files_in_folder\n   @~All files in {folder_path} have been deleted.$&")
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -114,9 +116,9 @@ def unpack_zip(zip_path, output_directory):
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(output_directory)
-        print(f"✓ Zip file unpacked successfully")
+        print(f"  @!Kotlyn$&/unpack_zip\n   @~Zip file unpacked successfully$&")
     except zipfile.BadZipFile:
-        print(f"The file '{zip_path}' is not a valid zip archive.")
+        print(f"  @!Kotlyn$&/unpack_zip\n   @~The file '{zip_path}' is not a valid zip archive.$&")
     except Exception as e:
         print(f"An error occurred: {e}")
 
@@ -151,14 +153,9 @@ def main() -> None:
     global ARGS
     original_path = os.path.realpath("./")
 
-    if len(ARGS) == 1:
-        ARGS.append("--test")
-
-    if len(ARGS) >= 2:
-        if not ARGS[1].startswith("--"):
-            ARGS.insert(1, "--run")
-
-    if ARGS[1] == "--setup":
+    if ARGS.normals[0] == "!setup":
+        printf("@!Kotlyn - Kotlin | Setup$&")
+        printf("@~Installing kotlin (.kt) language, creating environment variables...$&")
         # Creating folders
         create_folder(f"{MODULE_DIR}")
         create_folder(f"{MODULE_DIR}/shell")
@@ -176,7 +173,7 @@ def main() -> None:
             zenyx.printf("@!Setup has been completed before!$&")
             return
 
-        zenyx.printf("@?Downloading Kotlin...$&", end="\r")
+        zenyx.printf("  @?Downloading Kotlin...$&", end="\r")
 
         # Downloading latest release
         download_github_release(
@@ -188,8 +185,12 @@ def main() -> None:
         compiler_zip_path = path(
             f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/install/{zip_name}"
         )
+        printf("  Kotlin Downloaded", end="\r")
+
+        printf("  @?Unpacking ZIP Archive...$&", end="\r")
         unpack_zip(compiler_zip_path, path(f"{HOME_DIRECTORY}/{MODULE_DIR}/"))
         delete_files_in_folder(path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/install"))
+        printf("  Unpacked ZIP Archive", end="\r")
 
         kb_kotlin_home_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/kotlinc")
         if not os.path.exists(kb_kotlin_home_path):
@@ -265,9 +266,13 @@ def main() -> None:
         )
         os.system(f"powershell {path(f'{HOME_DIRECTORY}/{MODULE_DIR}/shell/setup_kotlyn_cmd.ps1')}")
 
+        delete_files_in_folder(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/")
+
         write_file(
             path(f"{HOME_DIRECTORY}/{MODULE_DIR}/.builder_install"), "COMPLETE"
         )
+
+        printf("@!Kotlyn - Kotlin | Installed$&")
         return
 
     builder_install_info = read_file(
@@ -277,27 +282,28 @@ def main() -> None:
         zenyx.printf("@!Setup has not been completed!$&\nRun setup: python -m kotlyn --setup")
         return
 
-    if ARGS[1] == "--version":
-        print("Kotlyn v0.0.7")
+    if ARGS.normals[0] == "!version":
+        print("[Builder/CLI] \nKotlyn version 0.0.7")
+        os.system("echo [JetBrains/Kotlin] && kotlin -version")
     
-    if ARGS[1] == "--update":
+    if ARGS.normals[0] == "!update":
         os.system("python -m pip install --upgrade kotlyn")
 
-    if ARGS[1] == "--build":
-        if len(ARGS) < 3:
+    if ARGS.tagged("build"):
+        if len(ARGS.normals) < 1 or ARGS.normals[0].startswith("!"):
             zenyx.printf("@!Missing param(s): <filename>$&")
             return
         
-        os.system(f'cd {os.path.dirname(ARGS[2])} && kotlinc {os.path.realpath(ARGS[2])} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], os.path.dirname(ARGS[2]))} && java -jar Main.jar')
+        os.system(f'cd {os.path.dirname(ARGS.normals[0])} && kotlinc {os.path.realpath(ARGS.normals[0])} -include-runtime -d Main.jar {list_not_entry_kt(ARGS.normals[0], os.path.dirname(ARGS.normals[0]))} && java -jar Main.jar')
     
-    if ARGS[1] == "--run":
-        if len(ARGS) < 3:
+    if ARGS.tagged("run"):
+        if len(ARGS.normals) < 1 or ARGS.normals[0].startswith("!"):
             zenyx.printf("@!Missing param(s): <filename>$&")
             return
         
         jar_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/kotlyn-{time.time()}-{random.randint(100000, 999999)}-{random.randint(100000, 999999)}")
 
-        os.system(f'cd {os.path.dirname(ARGS[2])} && kotlinc {os.path.realpath(ARGS[2])} -include-runtime -d {jar_path}.jar {list_not_entry_kt(ARGS[2], os.path.dirname(ARGS[2]))} && java -jar {jar_path}.jar')
+        os.system(f'cd {os.path.dirname(ARGS.normals[0])} && kotlinc {os.path.realpath(ARGS.normals[0])} -include-runtime -d {jar_path}.jar {list_not_entry_kt(ARGS.normals[0], os.path.dirname(ARGS.normals[0]))} && java -jar {jar_path}.jar')
         os.remove(f'{jar_path}.jar')
 
 if __name__ == "__main__":
