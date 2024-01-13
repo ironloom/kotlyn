@@ -235,9 +235,7 @@ def main() -> None:
                     "    $args = $args[1..$args.length]",
                     "}",
                     "# Call the Python module with the combined arguments and capture the output",
-                    "$result = Invoke-Expression -Command \"python -m kotlyn $argsString\"",
-                    "# Echo back the result",
-                    "echo $result"
+                    "Invoke-Expression -Command \"python -m kotlyn $argsString\"",
                 ]
             ),
         )
