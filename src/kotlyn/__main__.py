@@ -153,6 +153,10 @@ def main() -> None:
     global ARGS
     original_path = os.path.realpath("./")
 
+    os.system("@echo on")
+
+    print(ARGS)
+
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
         printf("@~Installing kotlin (.kt) language, creating environment variables...$&")
