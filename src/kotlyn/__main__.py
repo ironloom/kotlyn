@@ -153,9 +153,7 @@ def main() -> None:
     global ARGS
     original_path = os.path.realpath("./")
 
-    os.system("@echo on")
-
-    print(ARGS)
+    print("@echo on")
 
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
