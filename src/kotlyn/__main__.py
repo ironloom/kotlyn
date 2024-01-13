@@ -279,6 +279,9 @@ def main() -> None:
 
     if ARGS[1] == "--version":
         print("Kotlyn v0.0.7")
+    
+    if ARGS[1] == "--update":
+        os.system("python -m pip install --upgrade kotlyn")
 
     if ARGS[1] == "--build":
         if len(ARGS) < 3:
