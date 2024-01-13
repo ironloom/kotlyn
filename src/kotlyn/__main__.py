@@ -285,6 +285,7 @@ def main() -> None:
         return
 
     if ARGS.normals[0] == "!version":
+        print("@echo on")
         print("[Builder/CLI] \nKotlyn version 0.0.7")
         os.system("echo [JetBrains/Kotlin] && kotlin -version")
     
