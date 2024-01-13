@@ -3,6 +3,7 @@ import sys
 import zenyx
 import requests
 import zipfile
+import random
 
 
 ARGS = list(sys.argv)
@@ -87,6 +88,11 @@ def find_kotlin_compiler_zip(directory_path):
         return None
 
 
+def list_not_entry_kt(entry: str, path: str):
+    files = os.listdir(os.path.realpath(path))
+    return " ".join([file for file in files if file != entry and file.endswith(".kt")])
+
+
 def delete_files_in_folder(folder_path):
     try:
         # Get the list of files in the folder
@@ -144,6 +150,10 @@ def main() -> None:
     global ARGS
     if len(ARGS) == 1:
         ARGS.append("--test")
+
+    if len(ARGS) >= 2:
+        if not ARGS[1].startswith("--"):
+            ARGS.insert(1, "--run")
 
     if ARGS[1] == "--setup":
         # Creating folders
@@ -257,8 +267,32 @@ def main() -> None:
         )
         return
 
-    if ARGS[1] == "--test":
-        print("test yippie")
+    builder_install_info = read_file(
+            path(f"{HOME_DIRECTORY}/{MODULE_DIR}/.builder_install")
+        )
+    if builder_install_info != "COMPLETE":
+        zenyx.printf("@!Setup has not been completed!$&\nRun setup: python -m kotlyn --setup")
+        return
+
+    if ARGS[1] == "--version":
+        print("Kotlyn v0.0.7")
+
+    if ARGS[1] == "--build":
+        if len(ARGS) < 3:
+            zenyx.printf("@!Missing param(s): <filename>$&")
+            return
+        print(f'kotlinc {ARGS[2]} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar Main.jar')
+        os.system(f'kotlinc {ARGS[2]} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar Main.jar')
+    
+    if ARGS[1] == "--run":
+        if len(ARGS) < 3:
+            zenyx.printf("@!Missing param(s): <filename>$&")
+            return
+        
+        jar_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/{random.randint(100000, 999999)}_{random.randint(100000, 999999)}kotlyn")
+
+        os.system(f'kotlinc {ARGS[2]} -include-runtime -d {jar_path}.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar {jar_path}.jar')
+        os.remove(f'{jar_path}.jar')
 
 if __name__ == "__main__":
     main()
