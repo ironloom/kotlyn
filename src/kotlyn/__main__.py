@@ -9,7 +9,6 @@ import time
 import termcolor
 
 
-ARGS = zenyx.Arguments(sys.argv)
 HOME_DIRECTORY = os.path.expanduser("~")
 MODULE_DIR = "kotlyn"
 
@@ -150,9 +149,11 @@ def read_file(path: str) -> str:
 
 
 def main() -> None:
-    global ARGS
+    ARGS = zenyx.Arguments(sys.argv)
     original_path = os.path.realpath("./")
     kotlyn_cmd_filename = "kotlyn.ps1"
+
+    print(ARGS.args)
 
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
@@ -228,7 +229,7 @@ def main() -> None:
             "\n".join(
                 [
                     "# Combine all arguments into a single string",
-                    "$argsString = """,
+                    "$argsString = \"\"",
                     "while ($args) {",
                     "    $argsString += \" \" + $args[0]",
                     "    $args = $args[1..$args.length]",
