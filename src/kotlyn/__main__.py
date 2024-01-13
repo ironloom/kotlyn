@@ -152,6 +152,7 @@ def read_file(path: str) -> str:
 def main() -> None:
     global ARGS
     original_path = os.path.realpath("./")
+    kotlyn_cmd_filename = "kotlyn.ps1"
 
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
@@ -223,7 +224,7 @@ def main() -> None:
         os.system(f"powershell {path(f'{HOME_DIRECTORY}/{MODULE_DIR}/shell/setup_kotlin_env.ps1')}")
         
         write_file(
-            path(f"{HOME_DIRECTORY}/{MODULE_DIR}/shell/bin/kotlyn.bat"),
+            path(f"{HOME_DIRECTORY}/{MODULE_DIR}/shell/bin/{kotlyn_cmd_filename}"),
             "\n".join(
                 [
                     "# Combine all arguments into a single string",
