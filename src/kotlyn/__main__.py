@@ -153,8 +153,6 @@ def main() -> None:
     global ARGS
     original_path = os.path.realpath("./")
 
-    print("@echo on")
-
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
         printf("@~Installing kotlin (.kt) language, creating environment variables...$&")
@@ -285,7 +283,6 @@ def main() -> None:
         return
 
     if ARGS.normals[0] == "!version":
-        print("@echo on")
         print("[Builder/CLI] \nKotlyn version 0.0.7")
         os.system("echo [JetBrains/Kotlin] && kotlin -version")
     
