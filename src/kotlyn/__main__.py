@@ -4,6 +4,7 @@ import zenyx
 import requests
 import zipfile
 import random
+import time
 
 
 ARGS = list(sys.argv)
@@ -148,6 +149,8 @@ def read_file(path: str) -> str:
 
 def main() -> None:
     global ARGS
+    original_path = os.path.realpath("./")
+
     if len(ARGS) == 1:
         ARGS.append("--test")
 
@@ -281,17 +284,17 @@ def main() -> None:
         if len(ARGS) < 3:
             zenyx.printf("@!Missing param(s): <filename>$&")
             return
-        print(f'kotlinc {ARGS[2]} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar Main.jar')
-        os.system(f'kotlinc {ARGS[2]} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar Main.jar')
+        
+        os.system(f'cd {os.path.dirname(ARGS[2])} && kotlinc {os.path.realpath(ARGS[2])} -include-runtime -d Main.jar {list_not_entry_kt(ARGS[2], os.path.dirname(ARGS[2]))} && java -jar Main.jar')
     
     if ARGS[1] == "--run":
         if len(ARGS) < 3:
             zenyx.printf("@!Missing param(s): <filename>$&")
             return
         
-        jar_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/{random.randint(100000, 999999)}_{random.randint(100000, 999999)}kotlyn")
+        jar_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/kotlyn-{time.time()}-{random.randint(100000, 999999)}-{random.randint(100000, 999999)}")
 
-        os.system(f'kotlinc {ARGS[2]} -include-runtime -d {jar_path}.jar {list_not_entry_kt(ARGS[2], "./")} && java -jar {jar_path}.jar')
+        os.system(f'cd {os.path.dirname(ARGS[2])} && kotlinc {os.path.realpath(ARGS[2])} -include-runtime -d {jar_path}.jar {list_not_entry_kt(ARGS[2], os.path.dirname(ARGS[2]))} && java -jar {jar_path}.jar')
         os.remove(f'{jar_path}.jar')
 
 if __name__ == "__main__":
