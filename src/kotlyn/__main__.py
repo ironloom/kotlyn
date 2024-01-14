@@ -106,20 +106,20 @@ def delete_files_in_folder(folder_path):
             if os.path.isfile(file_path):
                 os.remove(file_path)
 
-        print(f"  @!Kotlyn$&/delete_files_in_folder\n   @~All files in {folder_path} have been deleted.$&")
+        printf(f"  @!Kotlyn$&/delete_files_in_folder\n   @~All files in {folder_path} have been deleted.$&")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        printf(f"An error occurred: {e}")
 
 
 def unpack_zip(zip_path, output_directory):
     try:
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(output_directory)
-        print(f"  @!Kotlyn$&/unpack_zip\n   @~Zip file unpacked successfully$&")
+        printf(f"  @!Kotlyn$&/unpack_zip\n   @~Zip file unpacked successfully$&")
     except zipfile.BadZipFile:
-        print(f"  @!Kotlyn$&/unpack_zip\n   @~The file '{zip_path}' is not a valid zip archive.$&")
+        printf(f"  @!Kotlyn$&/unpack_zip\n   @~The file '{zip_path}' is not a valid zip archive.$&")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        printf(f"An error occurred: {e}")
 
 
 def path(path: str) -> str:
@@ -153,7 +153,14 @@ def main() -> None:
     original_path = os.path.realpath("./")
     kotlyn_cmd_filename = "kotlyn.ps1"
 
-    print(ARGS.args)
+    if len(ARGS.normals) < 1:
+        return
+
+    if ARGS.tagged("--verbose"):
+        printf(f"ARGS: {ARGS.args}")
+
+    if not ARGS.normals[0].startswith("!") and len(ARGS.tags) == 0:
+        ARGS.tags.append("run")
 
     if ARGS.normals[0] == "!setup":
         printf("@!Kotlyn - Kotlin | Setup$&")
@@ -172,10 +179,10 @@ def main() -> None:
             path(f"{HOME_DIRECTORY}/{MODULE_DIR}/.builder_install")
         )
         if builder_install_info == "COMPLETE":
-            zenyx.printf("@!Setup has been completed before!$&")
+            printf("@!Setup has been completed before!$&")
             return
 
-        zenyx.printf("  @?Downloading Kotlin...$&", end="\r")
+        printf("  @?Downloading Kotlin...$&", end="\r")
 
         # Downloading latest release
         download_github_release(
@@ -276,7 +283,7 @@ def main() -> None:
             path(f"{HOME_DIRECTORY}/{MODULE_DIR}/.builder_install")
         )
     if builder_install_info != "COMPLETE":
-        zenyx.printf("@!Setup has not been completed!$&\nRun setup: python -m kotlyn --setup")
+        printf("@!Setup has not been completed!$&\nRun setup: python -m kotlyn --setup")
         return
 
     if ARGS.normals[0] == "!version":
@@ -288,14 +295,14 @@ def main() -> None:
 
     if ARGS.tagged("build"):
         if len(ARGS.normals) < 1 or ARGS.normals[0].startswith("!"):
-            zenyx.printf("@!Missing param(s): <filename>$&")
+            printf("@!Missing param(s): <filename>$&")
             return
         
-        os.system(f'cd {os.path.dirname(ARGS.normals[0])} && kotlinc {os.path.realpath(ARGS.normals[0])} -include-runtime -d Main.jar {list_not_entry_kt(ARGS.normals[0], os.path.dirname(ARGS.normals[0]))} && java -jar Main.jar')
+        os.system(f'cd {os.path.dirname(ARGS.normals[0])} && kotlinc {os.path.realpath(ARGS.normals[0])} -include-runtime -d Main.jar {list_not_entry_kt(ARGS.normals[0], os.path.dirname(ARGS.normals[0]))}')
     
     if ARGS.tagged("run"):
         if len(ARGS.normals) < 1 or ARGS.normals[0].startswith("!"):
-            zenyx.printf("@!Missing param(s): <filename>$&")
+            printf("@!Missing param(s): <filename>$&")
             return
         
         jar_path = path(f"{HOME_DIRECTORY}/{MODULE_DIR}/temp/kotlyn-{time.time()}-{random.randint(100000, 999999)}-{random.randint(100000, 999999)}")
