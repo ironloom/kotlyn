@@ -10,13 +10,13 @@
 ```
 # Kotlyn
 > **CURRENTLY WINDOWS ONLY!**<br>
-> Linux (Unix) support is going to be addedd, if everything goes right the unix based version will be out by May 2024.<br>
+> If everything goes as planned the unix based version will be out by May 2024.<br>
 
-The best toolkit to build and run Kotlin appications from the command line. This "python package" hijacks the pypi package manager/distributor to install Kotlin's latest version on your system. Apart from installying JetBrain's `kotlinc` terminal tool, Kotlyn provides a ✨ **new and shiny CLI** ✨ to run and build kotlin files.
+The best toolkit to build and run Kotlin appications from the command line. This "python package" hijacks the pypi package manager/distributor to install Kotlin's latest version on your system. Apart from installing JetBrain's `kotlinc` terminal tool, Kotlyn provides a ✨ **new and shiny CLI** ✨ to run and build kotlin files.
 
 
 ## Installation Guide
-It's really easy, don't worry! 😘
+It's really easy, don't worry! 
 
 1. **Make sure python 🐍 is installed**
 ```powershell
