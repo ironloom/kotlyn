@@ -1,6 +1,6 @@
 from zenyx import printf
-from Paths import *
-import Files
+from kotlyn.Paths import *
+import kotlyn.Files as Files
 import platform
 import os
 

@@ -7,10 +7,10 @@ import random
 import time
 
 
-from Paths import *
-import Files
-import Environ
-import Download
+from kotlyn.Paths import *
+import kotlyn.Files as Files
+import kotlyn.Environ as Environ
+import kotlyn.Download as Download
 
 
 def main() -> None:

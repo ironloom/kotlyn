@@ -1,6 +1,6 @@
 import os
 import zipfile
-import Paths
+from kotlyn.Paths import *
 from zenyx import printf
 
 
@@ -34,7 +34,7 @@ class directory:
             directory_name (str): name of the dir
         """
 
-        folder_path = os.path.join(Paths.HOME_DIRECTORY, directory_name)
+        folder_path = os.path.join(HOME_DIRECTORY, directory_name)
 
         try:
             os.makedirs(folder_path)
