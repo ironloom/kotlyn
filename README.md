@@ -1,3 +1,8 @@
+**Note:** If you plan on making a big and serious project, Kotlyn is not the library you are looking for. For big projects you probably want to use [gradle](https://gradle.org/install/#manually). While the `kotlinc` (the library which Kotlyn is based on) is pretty powerful, it's nowhere near as useful as gradle. 
+
+
+---
+
 ```    
   _   __      _   _             
  | | / /     | | | |              💙💙💜💛💛💛
@@ -12,7 +17,7 @@
 > **CURRENTLY WINDOWS ONLY!**<br>
 > If everything goes as planned the unix based version will be out by May 2024.<br>
 
-The best toolkit to build and run Kotlin appications from the command line. This "python package" hijacks the pypi package manager/distributor to install Kotlin's latest version on your system. Apart from installing JetBrain's `kotlinc` terminal tool, Kotlyn provides a ✨ **new and shiny CLI** ✨ to run and build kotlin files.
+Kotlyn is a toolkit to build and run Kotlin appications from the command line. This "python package" hijacks the pypi package manager/distributor to install Kotlin's latest version on your system. Apart from installing JetBrain's `kotlinc` terminal tool, Kotlyn provides a ✨ **new and shiny CLI** ✨ to run and build kotlin files.
 
 
 ## Installation Guide
